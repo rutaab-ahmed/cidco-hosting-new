@@ -480,7 +480,20 @@ app.post('/api/record/update', async (req, res) => {
     }
 });
 
-const PORT = 8083;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+// const PORT = 8083;
+// app.listen(PORT, () => {
+//     console.log(`🚀 Server running on http://localhost:${PORT}`);
+// });
+
+const PORT = process.env.PORT;
+
+app.get('/', (req, res) => {
+    res.send('CIDCO Backend is running 🚀');
 });
+
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+
