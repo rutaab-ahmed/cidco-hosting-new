@@ -1,7 +1,7 @@
 
 import { PlotRecord, SummaryData, User } from '../types';
 
-const API_BASE = 'http://localhost:8083/api';
+const API_BASE = 'https://cidco-hosting-new.onrender.com';
 
 export const ApiService = {
   // --- Auth ---
