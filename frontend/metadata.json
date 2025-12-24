@@ -1,0 +1,5 @@
+{
+  "name": "CIDCO Records Management System",
+  "description": "A secure web application for managing and searching plot records, ownership transfers, and survey data for CIDCO, featuring automated summaries and a robust search interface.",
+  "requestFramePermissions": []
+}
