@@ -7,7 +7,6 @@ import { Search as SearchIcon, Filter, User as UserIcon, Lock, Eye, EyeOff } fro
 import { Search } from './Search';
 import { useAuth } from '../App';
 import { useSearchParams } from 'react-router-dom';
-import { SearchSuggest } from '../components/SearchSuggest';
 
 const COLORS = ['#4f46e5', '#8b5cf6', '#ec4899', '#f43f5e', '#10b981', '#f59e0b', '#6366f1', '#14b8a6'];
 
@@ -31,6 +30,7 @@ const SummaryView = ({
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Table - 7 cols wide */}
         <div className="lg:col-span-7 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
           <div className="p-4 border-b bg-gray-50 flex justify-between items-center">
             <h3 className="font-semibold text-gray-800">{title} Data</h3>
@@ -114,6 +114,7 @@ const SummaryView = ({
           </div>
         </div>
 
+        {/* Chart - 5 cols wide */}
         <div className="lg:col-span-5 bg-white rounded-xl shadow-sm border border-gray-100 p-4 h-[600px] flex flex-col lg:sticky lg:top-24">
            <div className="mb-4">
              <h3 className="font-semibold text-gray-800">Area Distribution Chart</h3>
@@ -274,12 +275,14 @@ export const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
+  // Cascade Region -> Node
   useEffect(() => {
     ApiService.getNodes(selectedRegion).then(setNodes);
     setSelectedNode('');
     setSelectedSector('');
   }, [selectedRegion]);
 
+  // Cascade Node -> Sector
   useEffect(() => {
     if (selectedNode) {
       ApiService.getSectors(selectedNode, selectedRegion).then(setSectors);
@@ -291,23 +294,17 @@ export const Dashboard: React.FC = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    try {
-      const [uData, dData] = await Promise.all([
-        ApiService.getDashboardSummary(selectedRegion, selectedNode, selectedSector),
-        ApiService.getDepartmentSummary(selectedRegion, selectedNode, selectedSector)
-      ]);
-      
-      setUseData(processUseData(uData));
-      setDeptData(dData);
-    } catch (err) {
-      console.error("Failed to fetch dashboard data:", err);
-    } finally {
-      setLoading(false);
-    }
+    const [uData, dData] = await Promise.all([
+      ApiService.getDashboardSummary(selectedRegion, selectedNode, selectedSector),
+      ApiService.getDepartmentSummary(selectedRegion, selectedNode, selectedSector)
+    ]);
+    
+    setUseData(processUseData(uData));
+    setDeptData(dData);
+    setLoading(false);
   };
 
   const processUseData = (data: SummaryData[]) => {
-    if (!data || !Array.isArray(data)) return [];
     const primaryOrder = ['COMMERCIAL', 'RESIDENTIAL', 'RESIDENTIAL+COMMERCIAL', 'SERVICE INDUSTRY'];
     const primaryItems: SummaryData[] = [];
     const otherItems: SummaryData[] = [];
@@ -340,12 +337,11 @@ export const Dashboard: React.FC = () => {
   };
 
   const calcTotals = (data: SummaryData[]) => {
-    if (!data || !Array.isArray(data)) return { area: 0, count: 0, baseCount: 0 };
     const validRows = data.filter(d => d.category !== '--- OTHERS ---');
     return {
-      area: validRows.reduce((sum, item) => sum + (item.area || 0), 0),
-      count: validRows.reduce((sum, item) => sum + (item.additionalCount || 0), 0),
-      baseCount: validRows.reduce((sum, item) => sum + (item.basePlotCount || 0), 0)
+      area: validRows.reduce((sum, item) => sum + item.area, 0),
+      count: validRows.reduce((sum, item) => sum + item.additionalCount, 0),
+      baseCount: validRows.reduce((sum, item) => sum + item.basePlotCount, 0)
     };
   };
 
@@ -362,33 +358,32 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {(activeTab === 'use' || activeTab === 'dept') && (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 animate-fade-in relative z-50">
-          <div className="grid grid-cols-1 md:grid-cols-4 items-end gap-6">
-            <SearchSuggest 
-              label="Region" 
-              options={regions} 
-              value={selectedRegion} 
-              onChange={setSelectedRegion} 
-              placeholder="Select or type region"
-            />
-            <SearchSuggest 
-              label="Node" 
-              options={nodes} 
-              value={selectedNode} 
-              onChange={setSelectedNode} 
-              placeholder="Select or type node"
-            />
-            <SearchSuggest 
-              label="Sector" 
-              options={sectors} 
-              value={selectedSector} 
-              onChange={setSelectedSector} 
-              placeholder="Select or type sector"
-              disabled={!selectedNode}
-            />
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 animate-fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-4 items-end gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Region</label>
+              <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                <option value="">All Regions</option>
+                {regions.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Node</label>
+              <select value={selectedNode} onChange={(e) => setSelectedNode(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                <option value="">All Nodes</option>
+                {nodes.map(n => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Sector</label>
+              <select value={selectedSector} onChange={(e) => setSelectedSector(e.target.value)} disabled={!selectedNode} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-gray-100">
+                <option value="">All Sectors</option>
+                {sectors.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
             <div className="flex gap-2">
-              <button onClick={handleApplyFilter} className="flex-1 px-6 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition flex items-center justify-center gap-2 shadow-lg"><Filter size={16} /> Apply Filters</button>
-              <button onClick={handleClearFilter} className="px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-lg transition border border-transparent hover:border-gray-200">Clear</button>
+              <button onClick={handleApplyFilter} className="flex-1 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition flex items-center justify-center gap-2"><Filter size={16} /> Apply</button>
+              <button onClick={handleClearFilter} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition">Clear</button>
             </div>
           </div>
         </div>
