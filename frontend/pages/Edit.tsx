@@ -125,7 +125,8 @@ export const Edit: React.FC = () => {
 
         <form onSubmit={handleSubmit}>
           
-          <FormSection title="1. Primary Identification Headers">
+          <FormSection title="1. IDENTITY OF PLOT">
+          {/* <FormSection title="1. Primary Identification Headers"> */}
              <InputField dbKey="ID" value={formData.ID} readOnly={true} />
              <InputField dbKey="NAME_OF_NODE" value={formData.NAME_OF_NODE} onChange={handleChange} />
              <InputField dbKey="SECTOR_NO_" value={formData.SECTOR_NO_} onChange={handleChange} />
@@ -137,7 +138,8 @@ export const Edit: React.FC = () => {
              <InputField dbKey="REGION" value={formData.REGION} onChange={handleChange} />
           </FormSection>
 
-          <FormSection title="2. Legal Allotment & Core Metrics">
+          <FormSection title="2. DETAILS OF PLOT & OWNERS">
+          {/* <FormSection title="2. Legal Allotment & Core Metrics"> */}
              <InputField dbKey="DATE_OF_ALLOTMENT" value={formData.DATE_OF_ALLOTMENT} onChange={handleChange} />
              <InputField dbKey="NAME_OF_ORIGINAL_ALLOTTEE" value={formData.NAME_OF_ORIGINAL_ALLOTTEE} onChange={handleChange} />
              <InputField dbKey="PLOT_AREA_SQM_" value={formData.PLOT_AREA_SQM_} onChange={handleChange} />
@@ -156,7 +158,8 @@ export const Edit: React.FC = () => {
              <InputField dbKey="INVESTIGATOR_REMARKS" value={formData.INVESTIGATOR_REMARKS} onChange={handleChange} type="textarea" full />
           </FormSection>
 
-          <FormSection title="3. Succession & Transfer Timeline">
+          <FormSection title="3. Transfer Details in chronological order">
+          {/* <FormSection title="3. Succession & Transfer Timeline"> */}
              {[2,3,4,5,6,7,8,9,10,11].map(n => {
                 const ord = n === 2 ? 'ND' : n === 3 ? 'RD' : 'TH';
                 const nameKey = `NAME_OF_${n}${ord}_OWNER`;
@@ -170,7 +173,7 @@ export const Edit: React.FC = () => {
              })}
           </FormSection>
 
-          <FormSection title="4. Physical Survey Metadata">
+          <FormSection title="4. Survey Data">
              <InputField dbKey="TOTAL_AREA_SQM" value={formData.TOTAL_AREA_SQM} onChange={handleChange} />
              <InputField dbKey="USE_OF_PLOT" value={formData.USE_OF_PLOT} onChange={handleChange} />
              <InputField dbKey="SUB_USE_OF_PLOT" value={formData.SUB_USE_OF_PLOT} onChange={handleChange} />
@@ -179,7 +182,8 @@ export const Edit: React.FC = () => {
              <InputField dbKey="PHOTO_FOLDER" value={formData.PHOTO_FOLDER} onChange={handleChange} />
           </FormSection>
 
-          <FormSection title="5. Financial Auditing & Counts">
+          <FormSection title="5. QUANTITY CALCULATION DETAILS">
+          {/* <FormSection title="5. Financial Auditing & Counts"> */}
              <InputField dbKey="PLOT_AREA_FOR_INVOICE" value={formData.PLOT_AREA_FOR_INVOICE} onChange={handleChange} />
              <InputField dbKey="PLOT_USE_FOR_INVOICE" value={formData.PLOT_USE_FOR_INVOICE} onChange={handleChange} />
              <InputField dbKey="Tentative_Plot_Count" value={formData.Tentative_Plot_Count} onChange={handleChange} />
@@ -189,7 +193,7 @@ export const Edit: React.FC = () => {
              <InputField dbKey="Percentage_Match" value={formData.Percentage_Match} onChange={handleChange} />
           </FormSection>
 
-          <FormSection title="6. Source Registry & Flags">
+          <FormSection title="6. Source Registry">
              <InputField dbKey="FILE_NAME" value={formData.FILE_NAME} onChange={handleChange} />
              <InputField dbKey="SUBMISSION" value={formData.SUBMISSION} onChange={handleChange} />
              <InputField dbKey="IMAGES_PRESENT" value={formData.IMAGES_PRESENT} onChange={handleChange} />
