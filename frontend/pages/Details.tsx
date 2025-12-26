@@ -110,13 +110,15 @@ export const Details: React.FC = () => {
       <div className="bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)] rounded-2xl overflow-hidden border border-gray-100">
         <table className="w-full table-fixed border-collapse">
           <tbody>
-            <SectionHeader title="1. Identity Information" />
+            {/* <SectionHeader title="1. Identity Information" /> */}
+            <SectionHeader title="1. IDENTITY OF PLOT" />
             <Row dbKey1="ID" dbKey2="NAME_OF_NODE" />
             <Row dbKey1="SECTOR_NO_" dbKey2="BLOCK_ROAD_NAME" />
             <Row dbKey1="PLOT_NO_" dbKey2="PLOT_NO_AFTER_SURVEY" />
             <Row dbKey1="SUB_PLOT_NO_" dbKey2="UID" />
 
-            <SectionHeader title="2. Legal & Allotment Data" />
+            <SectionHeader title="2. DETAILS OF PLOT & OWNERS" />
+            {/* <SectionHeader title="2. Legal & Allotment Data" /> */}
             <Row dbKey1="DATE_OF_ALLOTMENT" dbKey2="NAME_OF_ORIGINAL_ALLOTTEE" />
             <Row dbKey1="PLOT_AREA_SQM_" dbKey2="BUILTUP_AREA_SQM_" />
             <Row dbKey1="USE_OF_PLOT_ACCORDING_TO_FILE" dbKey2="MAP_AREA" />
@@ -124,9 +126,10 @@ export const Details: React.FC = () => {
             <Row dbKey1="FSI" dbKey2="LEASE_TERM_YEARS_" />
             <Row dbKey1="OCCUPANCY_CERTIFICATE" dbKey2="COMENCEMENT_CERTIFICATE" />
             <Row dbKey1="REGION" dbKey2="PLANNING_USE" />
-            <Row dbKey1="Department_Remark" dbKey2="INVESTIGATOR_REMARKS" />
+            <Row dbKey1="Department_Remark" dbKey2="INVESTIGATOR_REMARKS" /> 
 
-            <SectionHeader title="3. Ownership Succession" />
+            <SectionHeader title="3. Transfer Details in chronological order" />
+            {/* <SectionHeader title="3. Ownership Succession" /> */}
             <tr className="bg-gray-50 border-b border-gray-200">
                <th className="p-3 text-left text-[10px] font-black text-gray-400 uppercase border-r border-gray-200 tracking-tighter">Ownership Tier</th>
                <th colSpan={2} className="p-3 text-left text-[10px] font-black text-gray-400 uppercase border-r border-gray-200 tracking-tighter">Full Name of Owner</th>
@@ -147,17 +150,20 @@ export const Details: React.FC = () => {
               )
             })}
 
-            <SectionHeader title="4. On-Site Survey Findings" />
+            <SectionHeader title="4. SURVEY INFORMATION" />
+            {/* <SectionHeader title="4. On-Site Survey Findings" /> */}
             <Row dbKey1="TOTAL_AREA_SQM" dbKey2="USE_OF_PLOT" />
             <Row dbKey1="SUB_USE_OF_PLOT" dbKey2="PLOT_STATUS" />
             <Row dbKey1="SURVEY_REMARKS" span={true} />
 
-            <SectionHeader title="5. Quantity & Density Calculations" />
+            <SectionHeader title="5. QUANTITY CALCULATION DETAILS" /> 
+            {/* <SectionHeader title="5. Quantity & Density Calculations" /> */}
             <Row dbKey1="PLOT_AREA_FOR_INVOICE" dbKey2="PLOT_USE_FOR_INVOICE" />
             <Row dbKey1="Tentative_Plot_Count" dbKey2="Minimum_Plot_Count" />
             <Row dbKey1="Additional_Plot_Count" dbKey2="Base_Plot_Count" />
 
-            <SectionHeader title="6. Secure Evidence Repository" />
+            <SectionHeader title="6. Attachments" />
+            {/* <SectionHeader title="6. Secure Evidence Repository" /> */}
             <tr>
               <td colSpan={4} className="p-10 bg-gray-50/50">
                  {record.images && record.images.length > 0 ? (
