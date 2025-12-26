@@ -5,6 +5,7 @@ import { PlotRecord } from '../types';
 import { Link } from 'react-router-dom';
 import { Eye, Edit2 } from 'lucide-react';
 import { useAuth } from '../App';
+import { SearchSuggest } from '../components/SearchSuggest';
 
 export const Search: React.FC = () => {
   const { user } = useAuth();
@@ -68,69 +69,53 @@ export const Search: React.FC = () => {
 
   return (
     <div className="max-w-[1600px] mx-auto space-y-8">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 relative z-[60]">
         <h1 className="text-2xl font-bold text-gray-900 mb-6 border-b pb-4">Search Plot Records</h1>
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Region</label>
-            <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              value={form.region}
-              onChange={e => setForm({ ...form, region: e.target.value })}
-            >
-              <option value="">Select Region</option>
-              {regions.map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Node Name <span className="text-red-500">*</span></label>
-            <select
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
-              value={form.node}
-              onChange={e => setForm({ ...form, node: e.target.value })}
-            >
-              <option value="">Select Node</option>
-              {nodes.map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Sector No. <span className="text-red-500">*</span></label>
-            <select
-              required
-              disabled={!form.node}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-gray-100"
-              value={form.sector}
-              onChange={e => setForm({ ...form, sector: e.target.value })}
-            >
-              <option value="">Select Sector</option>
-              {sectors.map(s => <option key={s} value={s}>{s}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Block / Road</label>
-            <select
-              disabled={!form.sector}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-gray-100"
-              value={form.block}
-              onChange={e => setForm({ ...form, block: e.target.value })}
-            >
-              <option value="">All Blocks</option>
-              {blocks.map(b => <option key={b} value={b}>{b}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Plot No.</label>
-            <select
-              disabled={!form.sector}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-gray-100"
-              value={form.plot}
-              onChange={e => setForm({ ...form, plot: e.target.value })}
-            >
-              <option value="">All Plots</option>
-              {plots.map(p => <option key={p} value={p}>{p}</option>)}
-            </select>
-          </div>
+          <SearchSuggest 
+            label="Region"
+            options={regions}
+            value={form.region}
+            onChange={val => setForm({ ...form, region: val })}
+            placeholder="Search Region"
+          />
+          
+          <SearchSuggest 
+            label="Node Name"
+            required
+            options={nodes}
+            value={form.node}
+            onChange={val => setForm({ ...form, node: val })}
+            placeholder="Search Node"
+          />
+
+          <SearchSuggest 
+            label="Sector No."
+            required
+            disabled={!form.node}
+            options={sectors}
+            value={form.sector}
+            onChange={val => setForm({ ...form, sector: val })}
+            placeholder="Search Sector"
+          />
+
+          <SearchSuggest 
+            label="Block / Road"
+            disabled={!form.sector}
+            options={blocks}
+            value={form.block}
+            onChange={val => setForm({ ...form, block: val })}
+            placeholder="Search Block"
+          />
+
+          <SearchSuggest 
+            label="Plot No."
+            disabled={!form.sector}
+            options={plots}
+            value={form.plot}
+            onChange={val => setForm({ ...form, plot: val })}
+            placeholder="Search Plot"
+          />
 
           <div className="md:col-span-3 lg:col-span-5 flex justify-end gap-4 mt-4">
             <Link to="/" className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
@@ -148,7 +133,7 @@ export const Search: React.FC = () => {
       </div>
 
       {results !== null && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in relative z-10">
           <div className="p-4 bg-gray-50 border-b"><h2 className="font-semibold text-gray-800">Search Results ({results.length})</h2></div>
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-max">
